@@ -1,0 +1,51 @@
+---
+services:
+    php:
+        build: ./php
+        environment:
+            TZ: Europe/Moscow
+        volumes_from:
+            - source
+
+    nginx:
+        build: ./nginx
+        ports:
+            - '80:80'
+        links:
+            - php
+        environment:
+            TZ: Europe/Moscow
+        volumes_from:
+            - source
+
+    mysql:
+        build: ./mysql
+        volumes:
+            - ./mysql/test2.sql:/docker-entrypoint-initdb.d/test2.sql
+        volumes_from:
+            - source
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            TZ: Europe/Moscow
+
+    adminer:
+        image: dockette/adminer:full
+        links:
+            - mysql:mysql
+        ports:
+            - '8080:80'
+        environment:
+            UPLOAD: 1024M
+            TZ: Europe/Moscow
+
+    source:
+        image: alpine:latest
+        volumes:
+            - ./logs/nginx:/var/log/nginx
+            - ./logs/php:/var/log/php
+            - ${SITE_PATH}:/var/www/test2
