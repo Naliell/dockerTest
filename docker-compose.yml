@@ -21,7 +21,7 @@ services:
     mysql:
         build: ./mysql
         volumes:
-            - ./mysql/test2.sql:/docker-entrypoint-initdb.d/test2.sql
+            - ./mysql/dockerTest.sql:/docker-entrypoint-initdb.d/dockerTest.sql
         volumes_from:
             - source
         ports:
@@ -48,4 +48,4 @@ services:
         volumes:
             - ./logs/nginx:/var/log/nginx
             - ./logs/php:/var/log/php
-            - ${SITE_PATH}:/var/www/test2
+            - ${SITE_PATH}:/var/www/dockerTest
