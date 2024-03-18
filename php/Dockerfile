@@ -13,6 +13,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN usermod -u 1000 www-data
 
-WORKDIR "/var/www/dockerTest"
+WORKDIR "/var/www/dockertest"
 
 EXPOSE 9000
